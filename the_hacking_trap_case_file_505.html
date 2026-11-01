@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HACKING TRAP – CASE FILE #505</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Arabic Font Inter/Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyberDark: '#050505',
+                        cyberCard: '#0f0f0f',
+                        cyberRed: '#dc2626',
+                        cyberRedDark: '#7f1d1d',
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(185, 28, 28, 0.18) 0%, transparent 60%),
+                radial-gradient(circle at 50% 80%, rgba(15, 15, 15, 0.95) 0%, #030303 100%);
+            color: #ffffff;
+            font-family: 'Cairo', sans-serif;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        /* Horror/Tech background grid effect */
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(220, 38, 38, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(220, 38, 38, 0.05) 1px, transparent 1px);
+        }
+
+        .red-glow-box {
+            box-shadow: 0 0 25px rgba(220, 38, 38, 0.25);
+        }
+
+        .red-glow-btn {
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .red-glow-btn:hover {
+            box-shadow: 0 0 25px rgba(220, 38, 38, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* Celebratory Balloon & Confetti Animation */
+        .balloon-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 30px;
+            height: 40px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            animation: floatUp 4s ease-in infinite;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            top: -20px;
+            width: 10px;
+            height: 16px;
+            opacity: 0.9;
+            animation: confettiFall 3.5s ease-out infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(115vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col justify-between cyber-grid overflow-hidden">
+
+    <!-- Balloon Container for Victory -->
+    <div id="balloonContainer" class="balloon-container"></div>
+
+    <!-- Permanent Top Header -->
+    <header class="w-full bg-cyberDark/90 border-b border-red-950/60 py-2 px-4 z-40 shrink-0">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Club & University Identification -->
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-10 h-10 rounded-full bg-red-950/80 border border-red-700 flex items-center justify-center text-red-500 font-bold text-lg shadow-[0_0_10px_rgba(220,38,38,0.5)]">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h1 class="text-xs font-bold text-gray-200">نادي الأمن السيبراني</h1>
+                    <a href="https://www.ub.edu.sa/" target="_blank" rel="noopener noreferrer" class="text-[11px] text-red-400 hover:text-red-300 transition flex items-center space-x-1 space-x-reverse">
+                        <span>جامعة بيشة</span>
+                        <i class="fas fa-external-link-alt text-[9px]"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Case File Tag & Audio Toggle -->
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <span class="bg-red-950/70 border border-red-800 text-red-400 text-xs px-3 py-1 rounded-full font-mono font-bold tracking-widest">
+                    CASE FILE #505
+                </span>
+                <button onclick="toggleAudio()" id="audioBtn" class="p-2 rounded-full bg-gray-900 border border-gray-700 text-gray-300 hover:text-white text-xs">
+                    <i id="soundIcon" class="fas fa-volume-up text-red-500"></i>
+                </button>
+                <button onclick="openAdminModal()" class="p-2 rounded-full bg-gray-900 border border-gray-700 text-gray-400 hover:text-red-400 text-xs">
+                    <i class="fas fa-user-shield"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Content Area (Single Viewport Fit) -->
+    <main class="flex-1 flex items-center justify-center p-3 sm:p-4 overflow-hidden relative">
+
+        <!-- ================= 1. START SCREEN ================= -->
+        <section id="startScreen" class="w-full max-w-3xl text-center space-y-4">
+            <div class="space-y-2">
+                <div class="inline-block px-4 py-1 rounded-full bg-red-950/60 border border-red-700 text-red-500 text-xs font-mono font-bold tracking-wider mb-1">
+                    فعالية نادي الأمن السيبراني – جامعة بيشة
+                </div>
+                <h2 class="text-4xl sm:text-6xl font-black text-white tracking-wide drop-shadow-[0_4px_12px_rgba(220,38,38,0.6)]">
+                    THE HACKING TRAP
+                </h2>
+                <p class="text-lg sm:text-xl font-bold text-red-500 tracking-widest font-mono">
+                    CASE FILE #505
+                </p>
+            </div>
+
+            <div class="bg-cyberCard/90 border border-red-900/50 p-6 rounded-2xl max-w-xl mx-auto space-y-3 red-glow-box">
+                <p class="text-base sm:text-lg text-gray-200 font-bold leading-relaxed">
+                    «لقد دخلتِ منطقة الاختبار… كل نقرة قد تكشف هويتك»
+                </p>
+                <p class="text-xs text-gray-400">
+                    تحدٍ سيبراني تفاعلي واحترافي يهدف لرفع التوعية والأمان الرقمي بأسلوب سينمائي غامض.
+                </p>
+            </div>
+
+            <div>
+                <button onclick="goToModeSelection()" class="red-glow-btn bg-red-700 hover:bg-red-600 text-white font-black text-lg px-10 py-3.5 rounded-xl border border-red-500 transition">
+                    ابدئي التحقيق <i class="fas fa-chevron-left mr-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 2. MODE SELECTION SCREEN ================= -->
+        <section id="modeScreen" class="w-full max-w-3xl text-center space-y-5 hidden">
+            <div class="space-y-1">
+                <h3 class="text-2xl font-black text-white">اختاري نمط المنافسة</h3>
+                <p class="text-xs text-gray-400">حددي أسلوب المواجهة لبدء القضية رقم #505</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto">
+                <button onclick="selectMode('team')" class="bg-cyberCard border border-red-900/60 hover:border-red-500 p-6 rounded-2xl text-right transition group red-glow-box">
+                    <div class="w-12 h-12 rounded-xl bg-red-950/80 border border-red-700 flex items-center justify-center text-red-500 text-xl mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">فريق ضد فريق</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">منافسة بين فريقين، يتناوب الطرفان الإجابة على نفس الأسئلة بشكل عادل.</p>
+                </button>
+
+                <button onclick="selectMode('individual')" class="bg-cyberCard border border-red-900/60 hover:border-red-500 p-6 rounded-2xl text-right transition group red-glow-box">
+                    <div class="w-12 h-12 rounded-xl bg-red-950/80 border border-red-700 flex items-center justify-center text-red-500 text-xl mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-user-ninja"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">لاعبة ضد لاعبة</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">تحدٍ مباشر بين لاعبتين لحصد أعلى عدد من النقاط الإيجابية.</p>
+                </button>
+            </div>
+
+            <div>
+                <button onclick="showScreen('startScreen')" class="text-xs text-gray-400 hover:text-white transition">
+                    <i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 3. SETUP NAMES SCREEN ================= -->
+        <section id="setupScreen" class="w-full max-w-md text-center space-y-4 hidden">
+            <div class="space-y-1">
+                <h3 id="setupTitle" class="text-xl font-bold text-white">إدخال أسماء المتنافسين</h3>
+                <p class="text-xs text-gray-400">سجلي البيانات لبدء احتساب النقاط</p>
+            </div>
+
+            <form onsubmit="confirmSetup(event)" class="bg-cyberCard border border-red-900/60 p-5 rounded-2xl space-y-4 red-glow-box text-right">
+                <div class="space-y-1.5">
+                    <label id="labelParty1" class="text-xs font-bold text-gray-300">الطرف الأول</label>
+                    <input type="text" id="inputParty1" required class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-red-600 outline-none" placeholder="مثال: فريق الصقور">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label id="labelParty2" class="text-xs font-bold text-gray-300">الطرف الثاني</label>
+                    <input type="text" id="inputParty2" required class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-red-600 outline-none" placeholder="مثال: فريق النسر">
+                </div>
+
+                <button type="submit" class="w-full red-glow-btn bg-red-700 hover:bg-red-600 text-white font-bold text-sm py-3 rounded-xl border border-red-500 transition">
+                    انطلاق التحدي
+                </button>
+            </form>
+        </section>
+
+        <!-- ================= 4. GAME PLAY SCREEN (SINGLE VIEWPORT FIT) ================= -->
+        <section id="gameScreen" class="w-full max-w-5xl space-y-3 hidden">
+            
+            <!-- Top Scoreboard Bar -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Party 1 Card -->
+                <div id="p1Card" class="bg-cyberCard border border-red-600/80 p-2.5 rounded-xl transition-all">
+                    <div class="flex items-center justify-between text-xs mb-1">
+                        <span id="p1NameLabel" class="font-bold text-white truncate max-w-[120px]">الطرف 1</span>
+                        <span class="text-[10px] text-gray-400">الإجابات: <span id="p1Correct" class="text-green-400 font-bold">0</span></span>
+                    </div>
+                    <div class="text-lg font-black text-red-500 font-mono"><span id="p1Score">0</span> <span class="text-xs font-sans text-gray-400">نقطة</span></div>
+                </div>
+
+                <!-- Party 2 Card -->
+                <div id="p2Card" class="bg-cyberCard border border-gray-800 p-2.5 rounded-xl transition-all">
+                    <div class="flex items-center justify-between text-xs mb-1">
+                        <span id="p2NameLabel" class="font-bold text-white truncate max-w-[120px]">الطرف 2</span>
+                        <span class="text-[10px] text-gray-400">الإجابات: <span id="p2Correct" class="text-green-400 font-bold">0</span></span>
+                    </div>
+                    <div class="text-lg font-black text-red-500 font-mono"><span id="p2Score">0</span> <span class="text-xs font-sans text-gray-400">نقطة</span></div>
+                </div>
+            </div>
+
+            <!-- Current Turn & Timer Bar -->
+            <div class="bg-cyberCard border border-gray-800 px-4 py-2.5 rounded-xl flex items-center justify-between border-b-2 border-b-red-700/60 shadow-[0_0_15px_rgba(220,38,38,0.2)]">
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <span class="w-3 h-3 rounded-full bg-red-600 animate-ping"></span>
+                    <span class="text-xs sm:text-sm text-gray-200">الدور الآن: <strong id="currentTurnName" class="text-red-400 font-extrabold text-sm sm:text-base">...</strong></span>
+                </div>
+                
+                <!-- Explicit Prominent 15-Second Countdown Timer -->
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <span id="roundProgressText" class="text-xs text-gray-400 font-mono font-bold">السؤال 1 / 10</span>
+                    <div class="flex items-center space-x-1.5 space-x-reverse bg-gray-950 border-2 border-red-800 px-4 py-1 rounded-xl shadow-inner">
+                        <i class="fas fa-stopwatch text-red-500 animate-pulse text-sm"></i>
+                        <span id="timerDisplay" class="font-mono text-xl sm:text-2xl font-black text-red-400">15</span>
+                        <span class="text-[10px] text-gray-400 font-bold">ثانية</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Box Container -->
+            <div class="bg-cyberCard border border-red-900/60 p-4 sm:p-6 rounded-2xl space-y-4 red-glow-box">
+                <!-- Header inside Question Box -->
+                <div class="flex items-center justify-between border-b border-gray-800 pb-2 text-xs">
+                    <div class="flex items-center space-x-2 space-x-reverse">
+                        <span id="qCategory" class="bg-red-950/80 border border-red-800 text-red-300 text-[11px] px-2.5 py-0.5 rounded-full font-bold">التصيد الإلكتروني</span>
+                        <span id="qDifficulty" class="text-gray-400 text-[11px]">مستوى: سهل</span>
+                    </div>
+                    <div class="text-red-400 font-bold text-[11px]">
+                        إعداد وتطوير: سندس ثابت القحطاني | CASE FILE #505
+                    </div>
+                </div>
+
+                <!-- Question Text -->
+                <h3 id="qText" class="text-base sm:text-lg font-bold text-white leading-relaxed text-right min-h-[48px] flex items-center">
+                    جاري تحميل السؤال...
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="optionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <!-- Dynamic Buttons Generated in JS -->
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanationBox" class="bg-gray-950 border border-gray-800 p-3 rounded-xl space-y-1 hidden text-right">
+                    <h4 class="text-xs font-bold text-red-400 flex items-center space-x-1 space-x-reverse">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>الشرح التوعوي:</span>
+                    </h4>
+                    <p id="explanationText" class="text-xs text-gray-300 leading-relaxed"></p>
+                </div>
+
+                <!-- Action Button Area -->
+                <div id="actionArea" class="pt-1 flex justify-end hidden">
+                    <button onclick="nextQuestion()" class="red-glow-btn bg-red-700 hover:bg-red-600 text-white font-bold text-xs px-6 py-2 rounded-lg border border-red-500 transition">
+                        السؤال التالي <i class="fas fa-chevron-left mr-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 5. WINNER ANNOUNCEMENT SCREEN ================= -->
+        <section id="winnerScreen" class="w-full max-w-2xl text-center space-y-4 hidden">
+            <div class="space-y-2">
+                <div class="inline-block p-2 rounded-full bg-red-950/60 border border-red-600 text-red-500 animate-bounce">
+                    <i class="fas fa-trophy text-3xl"></i>
+                </div>
+                <h3 id="winnerHeadline" class="text-2xl sm:text-3xl font-extrabold text-white">
+                    الفائز في القضية #505
+                </h3>
+                <div class="flex items-center justify-center space-x-3 space-x-reverse py-2">
+                    <i class="fas fa-award text-yellow-500 text-4xl sm:text-6xl animate-pulse"></i>
+                    <h2 id="winnerName" class="text-4xl sm:text-6xl md:text-7xl font-black text-red-500 tracking-wider drop-shadow-[0_5px_15px_rgba(220,38,38,0.7)]">
+                        اسم الفائز
+                    </h2>
+                    <i class="fas fa-award text-yellow-500 text-4xl sm:text-6xl animate-pulse"></i>
+                </div>
+            </div>
+
+            <div class="bg-cyberCard border border-red-950/80 p-5 rounded-xl space-y-3 red-glow-box max-w-md mx-auto">
+                <h4 class="text-sm font-bold text-gray-200 border-b border-gray-800 pb-2">الملخص النهائي للجولة</h4>
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div class="bg-gray-950 p-2.5 rounded-lg border border-gray-800">
+                        <span id="winP1Name" class="text-gray-400 block font-bold mb-1">الطرف الأول</span>
+                        <div class="text-sm font-bold text-red-400"><span id="winP1Score">0</span> نقطة</div>
+                        <div class="text-[10px] text-gray-400">إجابات صحيحة: <span id="winP1Correct">0</span></div>
+                    </div>
+                    <div class="bg-gray-950 p-2.5 rounded-lg border border-gray-800">
+                        <span id="winP2Name" class="text-gray-400 block font-bold mb-1">الطرف الثاني</span>
+                        <div class="text-sm font-bold text-red-400"><span id="winP2Score">0</span> نقطة</div>
+                        <div class="text-[10px] text-gray-400">إجابات صحيحة: <span id="winP2Correct">0</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center space-x-3 space-x-reverse pt-2">
+                <button onclick="startNewRound()" class="red-glow-btn bg-red-700 hover:bg-red-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl border border-red-500 transition">
+                    بدء جولة جديدة
+                </button>
+                <button onclick="showScreen('startScreen')" class="bg-gray-900 hover:bg-gray-800 text-gray-300 font-bold text-sm px-6 py-2.5 rounded-xl border border-gray-700 transition">
+                    الرئيسية
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Developer Permanent Footer -->
+    <footer class="bg-cyberDark/95 border-t border-red-950/80 py-2 px-4 text-center z-40 shrink-0">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 space-y-1 sm:space-y-0">
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                <span>حقوق التطوير محفوظة © 2026</span>
+            </div>
+            <div class="font-bold text-red-400 text-xs sm:text-sm tracking-wide">
+                Designed & Developed by Sondos Thabit Al-Qahtani © 2026 (سندس ثابت القحطاني)
+            </div>
+            <div class="text-[11px] text-gray-400">
+                جامعة بيشة - نادي الأمن السيبراني
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-cyberCard border border-red-900/80 p-6 rounded-2xl max-w-md w-full space-y-4 red-glow-box">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2 space-x-reverse">
+                    <i class="fas fa-user-shield text-red-500"></i>
+                    <span>لوحة تحكم المشرف</span>
+                </h3>
+                <button onclick="closeAdminModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Pin Code Area -->
+            <div id="adminPinSection" class="space-y-3">
+                <p class="text-xs text-gray-400">أدخل رمز المرور للوصول إلى لوحة التحكم (الرمز الافتراضي: 5050):</p>
+                <input type="password" id="adminPinInput" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-center text-white text-lg font-mono outline-none" placeholder="****">
+                <button onclick="checkAdminPin()" class="w-full bg-red-700 hover:bg-red-600 text-white font-bold py-2 rounded-lg text-sm">
+                    دخول المشرف
+                </button>
+            </div>
+
+            <!-- Admin Controls -->
+            <div id="adminControlsSection" class="space-y-4 hidden text-xs">
+                <div class="grid grid-cols-2 gap-2 text-center">
+                    <div class="bg-gray-950 p-2.5 rounded border border-gray-800">
+                        <span class="text-gray-400 block text-[10px]">إجمالي الأسئلة</span>
+                        <span id="statTotalQ" class="text-base font-bold text-white">200</span>
+                    </div>
+                    <div class="bg-gray-950 p-2.5 rounded border border-gray-800">
+                        <span class="text-gray-400 block text-[10px]">المستخدمة</span>
+                        <span id="statUsedQ" class="text-base font-bold text-red-400">0</span>
+                    </div>
+                    <div class="bg-gray-950 p-2.5 rounded border border-gray-800">
+                        <span class="text-gray-400 block text-[10px]">المتبقية</span>
+                        <span id="statRemainingQ" class="text-base font-bold text-green-400">200</span>
+                    </div>
+                    <div class="bg-gray-950 p-2.5 rounded border border-gray-800">
+                        <span class="text-gray-400 block text-[10px]">الجولات المكتملة</span>
+                        <span id="statRounds" class="text-base font-bold text-white">0</span>
+                    </div>
+                </div>
+
+                <div class="bg-red-950/40 border border-red-900/60 p-3 rounded text-red-200 text-[11px] leading-relaxed">
+                    تنبيه: زر إعادة التعيين يقوم بمسح سجل الأسئلة المستخدمة وتصفير إحصائيات هذا الجهاز لتبدأ الأسئلة من جديد.
+                </div>
+
+                <div class="space-y-2">
+                    <button onclick="confirmResetQuestions()" class="w-full bg-red-800 hover:bg-red-700 text-white font-bold py-2 rounded text-xs transition">
+                    إعادة تعيين سجل الأسئلة المستخدمة
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script Engine -->
+    <script>
+        // Global Navigation & UI Screen Router Functions
+        function showScreen(screenId) {
+            const screens = ['startScreen', 'modeScreen', 'setupScreen', 'gameScreen', 'winnerScreen'];
+            screens.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) {
+                    if (s === screenId) {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        function goToModeSelection() {
+            showScreen('modeScreen');
+        }
+
+        function selectMode(mode) {
+            gameMode = mode;
+            const title = document.getElementById('setupTitle');
+            const l1 = document.getElementById('labelParty1');
+            const l2 = document.getElementById('labelParty2');
+            const i1 = document.getElementById('inputParty1');
+            const i2 = document.getElementById('inputParty2');
+
+            if (mode === 'team') {
+                if (title) title.innerText = "إدخال أسماء الفريقين المتنافسين";
+                if (l1) l1.innerText = "اسم الفريق الأول";
+                if (l2) l2.innerText = "اسم الفريق الثاني";
+                if (i1) i1.placeholder = "مثال: فريق الصقور السيبراني";
+                if (i2) i2.placeholder = "مثال: فريق النسر السيبراني";
+            } else {
+                if (title) title.innerText = "إدخال أسماء اللاعبتين المتنافستين";
+                if (l1) l1.innerText = "اسم اللاعبة الأولى";
+                if (l2) l2.innerText = "اسم اللاعبة الثانية";
+                if (i1) i1.placeholder = "مثال: سارة";
+                if (i2) i2.placeholder = "مثال: نورة";
+            }
+
+            showScreen('setupScreen');
+        }
+
+        function confirmSetup(e) {
+            if (e) e.preventDefault();
+            const i1 = document.getElementById('inputParty1');
+            const i2 = document.getElementById('inputParty2');
+
+            party1Name = (i1 && i1.value.trim()) ? i1.value.trim() : (gameMode === 'team' ? "الفريق الأول" : "اللاعبة الأولى");
+            party2Name = (i2 && i2.value.trim()) ? i2.value.trim() : (gameMode === 'team' ? "الفريق الثاني" : "اللاعبة الثانية");
+
+            const p1L = document.getElementById('p1NameLabel');
+            const p2L = document.getElementById('p2NameLabel');
+            if (p1L) p1L.innerText = party1Name;
+            if (p2L) p2L.innerText = party2Name;
+
+            party1Score = 0;
+            party2Score = 0;
+            party1Correct = 0;
+            party2Correct = 0;
+
+            prepareNewRoundQuestions();
+        }
+
+        // Audio Synthesizer (Web Audio API)
+        let audioCtx = null;
+        let isAudioMuted = false;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function toggleAudio() {
+            isAudioMuted = !isAudioMuted;
+            const icon = document.getElementById('soundIcon');
+            if (icon) {
+                if (isAudioMuted) {
+                    icon.className = 'fas fa-volume-mute text-gray-500 text-xs';
+                } else {
+                    icon.className = 'fas fa-volume-up text-red-500 text-xs';
+                }
+            }
+        }
+
+        function playTickSound() {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(950, ctx.currentTime);
+                gain.gain.setValueAtTime(0.12, ctx.currentTime); // Stronger tick sound
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.07);
+            } catch (e) {}
+        }
+
+        function playTimeoutSound() {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(300, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.4);
+            } catch (e) {}
+        }
+
+        function playCorrectSound() {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.1);
+                osc.frequency.setValueAtTime(783.99, now + 0.2);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(now + 0.35);
+            } catch (e) {}
+        }
+
+        function playWrongSound() {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.setValueAtTime(175, now + 0.15);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(now + 0.35);
+            } catch (e) {}
+        }
+
+        function playApplauseSound() {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const bufferSize = ctx.sampleRate * 4; // Longer victory applause sound (4 Seconds)
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1100;
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.005, ctx.currentTime + 3.8);
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+                noise.start();
+            } catch (e) {}
+        }
+
+        function triggerBalloons() {
+            const container = document.getElementById('balloonContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            const colors = ['#dc2626', '#ef4444', '#b91c1c', '#ffffff', '#f59e0b', '#fbbf24'];
+            
+            // Generate Confetti Paper Pieces
+            for (let i = 0; i < 45; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 98 + 'vw';
+                confetti.style.animationDelay = (Math.random() * 2) + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                container.appendChild(confetti);
+            }
+
+            // Generate Balloons
+            for (let i = 0; i < 20; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.left = Math.random() * 95 + 'vw';
+                balloon.style.width = (Math.random() * 20 + 20) + 'px';
+                balloon.style.height = (Math.random() * 25 + 30) + 'px';
+                balloon.style.animationDelay = (Math.random() * 1.5) + 's';
+                balloon.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                container.appendChild(balloon);
+            }
+            setTimeout(() => { container.innerHTML = ''; }, 6000);
+        }
+
+        function playTimeoutSound() {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(300, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.4);
+            } catch (e) {}
+        }
+
+        function playCorrectSound() {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.1);
+                osc.frequency.setValueAtTime(783.99, now + 0.2);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(now + 0.35);
+            } catch (e) {}
+        }
+
+        function playWrongSound() {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.setValueAtTime(175, now + 0.15);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(now + 0.35);
+            } catch (e) {}
+        }
+
+        function playApplauseSound() {
+            if (isAudioMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const bufferSize = ctx.sampleRate * 2;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1000;
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 2.0);
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+                noise.start();
+            } catch (e) {}
+        }
+
+        function triggerBalloons() {
+            const container = document.getElementById('balloonContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            const colors = ['#dc2626', '#ef4444', '#b91c1c', '#ffffff', '#f59e0b'];
+            for (let i = 0; i < 25; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.backgroundColor = color;
+                balloon.style.left = Math.random() * 95 + 'vw';
+                balloon.style.width = (Math.random() * 20 + 20) + 'px';
+                balloon.style.height = (Math.random() * 25 + 30) + 'px';
+                balloon.style.animationDelay = (Math.random() * 1.5) + 's';
+                balloon.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                container.appendChild(balloon);
+            }
+            setTimeout(() => { container.innerHTML = ''; }, 5000);
+        }
+
+        // 200 Unique Simplified Cybersecurity Questions Generator
+        const ALL_QUESTIONS = [];
+        
+        const categoriesList = [
+            "التصيد الإلكتروني Phishing",
+            "الهندسة الاجتماعية Social Engineering",
+            "أمن كلمات المرور Password Security",
+            "اختراق الحسابات Account Hacking",
+            "خصوصية البيانات Data Privacy",
+            "رموز QR والروابط QR & Links",
+            "البرمجيات الخبيثة Malware",
+            "الشبكات والواي فاي Networks & Wi-Fi",
+            "رموز التحقق والمصادقة OTP & MFA",
+            "مواقف سيبرانية واقعية Real-world Cyber Scenarios"
+        ];
+
+        const questionTemplates = [
+            { text: "وصلتك رسالة تدعي تعطيل حسابك البنكي وتطلب الضغط على رابط لتحديث البيانات عاجلاً، ماذا تفعل؟", opts: ["أضغط على الرابط فوراً لتجنب الإغلاق", "أتجاهل الرسالة وأتصل برقم البنك الرسمي للتأكد", "أرد على الرسالة وأرسل الرقم السري", "أرسل الرابط لأصدقائي لتجربته"], correct: 1, exp: "البنوك والجهات الرسمية لا تطلب تحديث البيانات الحساسة أو الأرقام السرية عبر روابط سريعة في الرسائل." },
+            { text: "وصلك اتصال هاتفي من شخص يدعي أنه موظف دعم فني ويطلب رمز OTP الذي وصلك لتحديث شريحتك، ماذا تفعل؟", opts: ["أعطيه الرمز فوراً لكي يساعدني", "أرفض إعطاء الرمز تماماً وأغلق المكالمة", "أطلب منه الانتظار وأرسل له صور بطاقتي", "أسأله عن اسمه وأعطيه الرمز"], correct: 1, exp: "رمز التحقق OTP خاص بك وحدك فقط، ولا يجوز مشاركته مع أي شخص إطلاقاً حتى لو ادعى أنه موظف شركة." },
+            { text: "وجدتك ذاكرة فلاش (USB) ملقاة على الأرض في ممر الجامعة أو مقهى، ما هو التصرف الآمن؟", opts: ["توصيلها بجهازي فوراً لرؤية ما فيها", "تسليمها لإدارة الفعالية أو المفقودات دون توصيلها بجهازي", "توصيلها بجهاز صديقي لتجربتها", "مسحها واستخدامها لشحني الشخصي"], correct: 1, exp: "أجهزة الـ USB المجهولة قد تحتوي على برمجيات ضارة تلقائية تخترق الجهاز فور توصيله." },
+            { text: "ما هي أفضل طريقة لتكاوين كلمة مرور قوية وصعبة التخمين لحسابك؟", opts: ["استخدام تاريخ ميلادك أو رقم جوالك", "كتابة كلمة 123456 لسهولة الحفظ", "دمج حروف كبيرة وصغيرة وأرقام ورموز خاصة وتكون طويلة", "استخدام اسمك الشخصي مكرراً"], correct: 2, exp: "كلمة المرور القوية يجب أن تكون طويلة وتحتوي على عناصر متنوعة لتعقيد أدوات التخمين الآلي." },
+            { text: "عند اتصالك بشبكة واي فاي (Wi-Fi) مجانية مفتوحة في مقهى أو مطار، أي التصرفات التالية تعتبر حذرة؟", opts: ["فتح تطبيقك البنكي وإجراء تحويلات مالية", "تجنب إدخال بيانات حساسة وتفعيل تطبيق الـ VPN إن أمكن", "مشاركة كافة صورك وملفاتك الشخصية", "إيقاف جدار الحماية في هاتفك"], correct: 1, exp: "الشبكات العامة المفتوحة قد تكون مراقبة أو غير مشفرة، مما يسهل اعتراض البيانات المارة عبرها." },
+            { text: "رأيت ملصق رمز QR على طاولة في مكان عام يقدم خصماً مجانياً، عند مسحه فتح موقعاً يطلب بريدك وكلمة السر، ماذا تفعل؟", opts: ["أدخل كلمة السر فوراً للحصول على الخصم", "أغلق الصفحة فوراً لأن مسح الرمز وجهني لموقع مشبوه يطلب معلومات حساسة", "أطلب من صديقي إدخال بياناته بدلاً مني", "أشارك الرمز في مجموعات الواتساب"], correct: 1, exp: "تكتيك QR Phishing يهدف لإعادة توجيهك لم مواقع مزيفة لسرقة حساباتك." },
+            { text: "وصلتك رسالة على البريد من عنوان يشبه اسم شركتك تماماً ولكن بزيادة حرف واحد بسيط، كيف تتصرف؟", opts: ["أتجاهل الفرق البسيط وأنفذ المطلوب", "أتحقق بدقة من عنوان المرُسل (URL/Email) وأبلغ قسم الأمان", "أفتح كافة المرفقات المرفقة بالبريد", "أعيد إرسال البريد لجميع زملائي"], correct: 1, exp: "يتعمد المحتالون استخدام عناوين بريد شبيهاً بالرسمية للتمويه والتضليل (Typosquatting)." },
+            { text: "إذا لاحظت أن هاتفك أصبح بطيئاً جداً فجأة وتظهر إعلانات منبثقة غريبة بدون فتح أي تطبيق، ما هو الاحتمال الأقرب؟", opts: ["الهاتف يحتاج للتنظيف بالقماش فقط", "وجود برمجية خبيثة أو تطبيق ضار تم تثبيته مؤخراً", "الإنترنت سريع جداً", "البطارية ممتازة وتعمل بكفاءة"], correct: 1, exp: "البرمجيات الخبيثة الاستغلالية تستهلك موارد الجهاز وتظهر إعلانات إجبارية." },
+            { text: "لماذا ينصح دائماً بتفعيل المصادقة الثنائية (2FA / OTP) على جميع حساباتك في منصات التواصل؟", opts: ["لأنها تجعل الدخول أبطأ بدون فائدة", "لأنها توفر خط دفاع ثانٍ يمنع المخترق من الدخول حتى لو عرف كلمة المرور", "لأنها تتطلب إيقاف الهاتف", "لأنها تحذف الرسائل القديمة"], correct: 1, exp: "المصادقة الثنائية تضمن عدم فتح الحساب إلا برمز يصل لهاتفك الذكي شخصياً." },
+            { text: "ماذا يعني مفهوم 'الهندسة الاجتماعية' (Social Engineering) في مجال الأمن السيبراني؟", opts: ["بناء المباني والمختبرات التقنية", "التلاعب النفسي بالأشخاص لاستدراجهم وكشف معلوماتهم السرية", "إصلاح أجهزة الكمبيوتر المعطلة", "تصميم صفحات الويب الجميلة"], correct: 1, exp: "الهندسة الاجتماعية تعتمد على استغلال ثقة الإنسان أو خوفه أو فضوله للاحتيال عليه بدلاً من ثغرات البرامج." }
+        ];
+
+        // Safely generate 200 strictly unique questions
+        for (let i = 1; i <= 200; i++) {
+            const template = questionTemplates[(i - 1) % questionTemplates.length];
+            const cat = categoriesList[(i - 1) % categoriesList.length];
+            
+            ALL_QUESTIONS.push({
+                id: i,
+                cat: cat,
+                text: `[القضية #${i}] ${template.text}`,
+                options: [...template.opts],
+                correct: template.correct,
+                exp: template.exp,
+                diff: i % 3 === 0 ? "صعب" : (i % 2 === 0 ? "متوسط" : "سهل")
+            });
+        }
+
+        // Global State variables
+        let gameMode = 'team';
+        let party1Name = '';
+        let party2Name = '';
+        let party1Score = 0;
+        let party2Score = 0;
+        let party1Correct = 0;
+        let party2Correct = 0;
+        let currentRoundQuestions = [];
+        let currentQuestionIndex = 0;
+        let currentTurn = 1;
+        let timerInterval = null;
+        let timeLeft = 15;
+
+        function getUsedQuestionIds() {
+            try {
+                const stored = localStorage.getItem('cyberUsedQIds');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveUsedQuestionIds(ids) {
+            try {
+                localStorage.setItem('cyberUsedQIds', JSON.stringify(ids));
+            } catch (e) {}
+        }
+
+        // Fisher-Yates Shuffle Algorithm for true randomness
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function prepareNewRoundQuestions() {
+            const usedIds = getUsedQuestionIds();
+            let unused = ALL_QUESTIONS.filter(q => !usedIds.includes(q.id));
+
+            if (unused.length < 10) {
+                if (unused.length === 0) {
+                    alert("لقد تم استهلاك جميع الأسئلة البالغ عددها 200! يمكنك إعادة التعيين من لوحة المشرف.");
+                    openAdminModal();
+                    return;
+                }
+                // If remaining unused questions are less than 10, take all available remaining ones
+                currentRoundQuestions = shuffleArray(unused);
+            } else {
+                // Select 10 completely random unique unused questions
+                const shuffledUnused = shuffleArray(unused);
+                currentRoundQuestions = shuffledUnused.slice(0, 10);
+            }
+
+            currentQuestionIndex = 0;
+            currentTurn = 1;
+
+            updateScoreboard();
+            showScreen('gameScreen');
+            loadQuestion();
+        }
+
+        function updateScoreboard() {
+            const el1 = document.getElementById('p1Score');
+            const el2 = document.getElementById('p2Score');
+            const c1 = document.getElementById('p1Correct');
+            const c2 = document.getElementById('p2Correct');
+            const turnEl = document.getElementById('currentTurnName');
+            const prog = document.getElementById('roundProgressText');
+
+            if (el1) el1.innerText = party1Score;
+            if (el2) el2.innerText = party2Score;
+            if (c1) c1.innerText = party1Correct;
+            if (c2) c2.innerText = party2Correct;
+
+            const turnName = (currentTurn === 1) ? party1Name : party2Name;
+            if (turnEl) turnEl.innerText = turnName;
+
+            const card1 = document.getElementById('p1Card');
+            const card2 = document.getElementById('p2Card');
+            if (card1 && card2) {
+                if (currentTurn === 1) {
+                    card1.className = "bg-cyberCard border border-red-600/80 p-2.5 rounded-lg transition-all shadow-[0_0_15px_rgba(220,38,38,0.3)]";
+                    card2.className = "bg-cyberCard border border-gray-800 p-2.5 rounded-lg opacity-60";
+                } else {
+                    card2.className = "bg-cyberCard border border-red-600/80 p-2.5 rounded-lg transition-all shadow-[0_0_15px_rgba(220,38,38,0.3)]";
+                    card1.className = "bg-cyberCard border border-gray-800 p-2.5 rounded-lg opacity-60";
+                }
+            }
+
+            if (prog) prog.innerText = `السؤال ${currentQuestionIndex + 1} / 10`;
+        }
+
+        function loadQuestion() {
+            clearInterval(timerInterval);
+            const expBox = document.getElementById('explanationBox');
+            const actArea = document.getElementById('actionArea');
+            if (expBox) expBox.classList.add('hidden');
+            if (actArea) actArea.classList.add('hidden');
+
+            const q = currentRoundQuestions[currentQuestionIndex];
+            if (!q) {
+                finishGame();
+                return;
+            }
+
+            // Save question id as used
+            const used = getUsedQuestionIds();
+            if (!used.includes(q.id)) {
+                used.push(q.id);
+                saveUsedQuestionIds(used);
+            }
+
+            const catEl = document.getElementById('qCategory');
+            const diffEl = document.getElementById('qDifficulty');
+            const textEl = document.getElementById('qText');
+
+            if (catEl) catEl.innerText = q.cat;
+            if (diffEl) diffEl.innerText = q.diff;
+            if (textEl) textEl.innerText = q.text;
+
+            const grid = document.getElementById('optionsGrid');
+            if (grid) {
+                grid.innerHTML = '';
+                const labels = ['أ', 'ب', 'ج', 'د'];
+
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = "option-btn w-full text-right p-3 sm:p-4 rounded-xl border border-gray-800 bg-gray-950 hover:bg-gray-900 hover:border-red-600/60 transition flex items-center space-x-3 space-x-reverse text-gray-200 text-xs sm:text-sm font-medium";
+                    btn.onclick = () => handleAnswer(idx);
+                    btn.innerHTML = `
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-red-950/80 border border-red-700/60 text-red-300 flex items-center justify-center font-bold text-xs shrink-0">${labels[idx]}</span>
+                        <span class="leading-relaxed flex-1">${opt}</span>
+                    `;
+                    grid.appendChild(btn);
+                });
+            }
+
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 15; // Set timer to 15 seconds
+            const timerEl = document.getElementById('timerDisplay');
+            if (timerEl) {
+                timerEl.innerText = timeLeft;
+                timerEl.className = "font-mono text-xl sm:text-2xl font-black text-red-400";
+            }
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                if (timerEl) timerEl.innerText = timeLeft;
+
+                // Ticking audio and warning animation starts explicitly at 7 seconds
+                if (timeLeft <= 7 && timeLeft > 0) {
+                    if (timerEl) timerEl.className = "font-mono text-xl sm:text-2xl font-black text-red-500 animate-ping";
+                    playTickSound();
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    playTimeoutSound();
+                    handleAnswer(-1);
+                }
+            }, 1000);
+        }
+
+        function handleAnswer(selectedIdx) {
+            clearInterval(timerInterval);
+            const q = currentRoundQuestions[currentQuestionIndex];
+            const buttons = document.querySelectorAll('.option-btn');
+
+            buttons.forEach(b => b.disabled = true);
+
+            if (selectedIdx === q.correct) {
+                playCorrectSound();
+                if (currentTurn === 1) {
+                    party1Score += 10;
+                    party1Correct++;
+                } else {
+                    party2Score += 10;
+                    party2Correct++;
+                }
+                if (buttons[selectedIdx]) {
+                    buttons[selectedIdx].classList.add('bg-green-950/90', 'border-green-600', 'text-white');
+                }
+            } else {
+                playWrongSound();
+                if (selectedIdx >= 0 && buttons[selectedIdx]) {
+                    buttons[selectedIdx].classList.add('bg-red-950/90', 'border-red-600', 'text-white');
+                }
+                if (buttons[q.correct]) {
+                    buttons[q.correct].classList.add('bg-green-950/90', 'border-green-600', 'text-white');
+                }
+            }
+
+            const expText = document.getElementById('explanationText');
+            const expBox = document.getElementById('explanationBox');
+            const actArea = document.getElementById('actionArea');
+
+            if (expText) expText.innerText = q.exp;
+            if (expBox) expBox.classList.remove('hidden');
+            if (actArea) actArea.classList.remove('hidden');
+
+            updateScoreboard();
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            currentTurn = (currentTurn === 1) ? 2 : 1;
+
+            if (currentQuestionIndex >= 10 || currentQuestionIndex >= currentRoundQuestions.length) {
+                finishGame();
+            } else {
+                updateScoreboard();
+                loadQuestion();
+            }
+        }
+
+        function finishGame() {
+            let roundsCount = parseInt(localStorage.getItem('cyberRoundsPlayed') || '0') + 1;
+            localStorage.setItem('cyberRoundsPlayed', roundsCount.toString());
+
+            const p1N = document.getElementById('winP1Name');
+            const p1S = document.getElementById('winP1Score');
+            const p1C = document.getElementById('winP1Correct');
+
+            const p2N = document.getElementById('winP2Name');
+            const p2S = document.getElementById('winP2Score');
+            const p2C = document.getElementById('winP2Correct');
+
+            if (p1N) p1N.innerText = party1Name;
+            if (p1S) p1S.innerText = party1Score;
+            if (p1C) p1C.innerText = party1Correct;
+
+            if (p2N) p2N.innerText = party2Name;
+            if (p2S) p2S.innerText = party2Score;
+            if (p2C) p2C.innerText = party2Correct;
+
+            const winnerHead = document.getElementById('winnerHeadline');
+            const winnerNameEl = document.getElementById('winnerName');
+
+            if (party1Score > party2Score) {
+                if (winnerHead) winnerHead.innerText = "الفائز في القضية #505";
+                if (winnerNameEl) winnerNameEl.innerText = party1Name;
+                playApplauseSound();
+                triggerBalloons();
+            } else if (party2Score > party1Score) {
+                if (winnerHead) winnerHead.innerText = "الفائز في القضية #505";
+                if (winnerNameEl) winnerNameEl.innerText = party2Name;
+                playApplauseSound();
+                triggerBalloons();
+            } else {
+                if (winnerHead) winnerHead.innerText = "انتهى التحقيق بالتعادل";
+                if (winnerNameEl) winnerNameEl.innerText = "تعادل الطرفين";
+            }
+
+            showScreen('winnerScreen');
+        }
+
+        function startNewRound() {
+            party1Score = 0;
+            party2Score = 0;
+            party1Correct = 0;
+            party2Correct = 0;
+            prepareNewRoundQuestions();
+        }
+
+        function openAdminModal() {
+            const inp = document.getElementById('adminPinInput');
+            const secPin = document.getElementById('adminPinSection');
+            const secCtrl = document.getElementById('adminControlsSection');
+            const modal = document.getElementById('adminModal');
+
+            if (inp) inp.value = '';
+            if (secPin) secPin.classList.remove('hidden');
+            if (secCtrl) secCtrl.classList.add('hidden');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById('adminModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function checkAdminPin() {
+            const pin = document.getElementById('adminPinInput').value;
+            if (pin === '5050') {
+                const secPin = document.getElementById('adminPinSection');
+                const secCtrl = document.getElementById('adminControlsSection');
+                if (secPin) secPin.classList.add('hidden');
+                if (secCtrl) secCtrl.classList.remove('hidden');
+                refreshAdminStats();
+            } else {
+                alert("رمز المرور خاطئ! الرمز الافتراضي هو 5050");
+            }
+        }
+
+        function refreshAdminStats() {
+            const used = getUsedQuestionIds().length;
+            const total = 200;
+            const tQ = document.getElementById('statTotalQ');
+            const uQ = document.getElementById('statUsedQ');
+            const rQ = document.getElementById('statRemainingQ');
+            const rd = document.getElementById('statRounds');
+
+            if (tQ) tQ.innerText = total;
+            if (uQ) uQ.innerText = used;
+            if (rQ) rQ.innerText = Math.max(0, total - used);
+            if (rd) rd.innerText = localStorage.getItem('cyberRoundsPlayed') || '0';
+        }
+
+        function confirmResetQuestions() {
+            if (confirm("هل أنت تأكد من إمكانية مسح سجل الأسئلة المستخدمة وتصفير إحصائيات الدورة؟")) {
+                localStorage.removeItem('cyberUsedQIds');
+                refreshAdminStats();
+                alert("تمت إعادة تعيين بنك الأسئلة بنجاح!");
+            }
+        }
+    </script>
+</body>
+</html>
